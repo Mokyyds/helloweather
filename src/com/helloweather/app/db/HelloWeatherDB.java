@@ -11,12 +11,13 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class HelloWeatherDB {
 	/*
 	 * 数据库名
 	 */
-	public static final String DB_NAME = "cool_weather";
+	public static final String DB_NAME = "hello_weather";
 
 	/*
 	 * 数据库版本
@@ -83,7 +84,7 @@ public class HelloWeatherDB {
 	/*
 	 * 将City实例存储到数据库
 	 */
-	public void saveProvince(City city) {
+	public void saveCity(City city) {
 		if (city != null) {
 			ContentValues values = new ContentValues();
 			values.put("city_name", city.getCityName());
@@ -108,6 +109,7 @@ public class HelloWeatherDB {
 						.getColumnIndex("city_name")));
 				city.setCityCode(cursor.getString(cursor
 						.getColumnIndex("city_code")));
+				city.setProvinceId(provinceId);
 				list.add(city);
 			} while (cursor.moveToNext());
 		}
@@ -134,6 +136,7 @@ public class HelloWeatherDB {
 	public List<County> loadCounties(int cityId) {
 		List<County> list = new ArrayList<County>();
 		Cursor cursor = db.query("County", null, "city_id = ?",
+				
 				new String[] { String.valueOf(cityId) }, null, null, null);
 		if (cursor.moveToFirst()) {
 			do {
@@ -143,10 +146,12 @@ public class HelloWeatherDB {
 						.getColumnIndex("county_name")));
 				county.setCountyCode(cursor.getString(cursor
 						.getColumnIndex("county_code")));
+				county.setCityId(cityId);
 				list.add(county);
 			} while (cursor.moveToNext());
 		}
 		if (cursor != null) {
+			
 			cursor.close();
 		}
 		return list;

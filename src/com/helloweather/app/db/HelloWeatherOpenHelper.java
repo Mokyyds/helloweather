@@ -28,7 +28,8 @@ public class HelloWeatherOpenHelper extends SQLiteOpenHelper {
 	public static final String CREATE_COUNTY = "create table County ("
 			+ "id integer primary key autoincrement, "
 			+ "county_name text, "
-			+ "city_id integer)";
+			+ "county_code text,"
+			+ "city_id integer )";
 	public HelloWeatherOpenHelper(Context context, String name,
 			CursorFactory factory, int version) {
 		super(context, name, factory, version);
